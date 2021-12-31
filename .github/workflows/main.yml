@@ -70,7 +70,6 @@ jobs:
           ./gradlew :app:assembleRelease
           find ./app/build/outputs/
           find ./app/build/outputs -name '*.apk' -exec mv {} $BUILD_NAME_WITH_VERSION.apk \;
-          find ./app/build/outputs -name 'mapping.txt' -exec mv {} $BUILD_NAME_WITH_VERSION-mapping.txt \;
       - uses: AoEiuV020/sign-android-release@v2
         name: Sign app APK
         env:
@@ -109,16 +108,6 @@ jobs:
           asset_path: ${{ env.BUILD_NAME_WITH_VERSION }}.apk
           asset_name: ${{ env.BUILD_NAME_WITH_VERSION }}.apk
           asset_content_type: application/zip
-      - name: Upload android mapping
-        if: ${{ env.CREATE_RELEASE == 'true' }}
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.BUILD_NAME_WITH_VERSION }}-mapping.txt
-          asset_name: ${{ env.BUILD_NAME_WITH_VERSION }}-mapping.txt
-          asset_content_type: text/plain
       - name: public release
         if: ${{ env.CREATE_RELEASE == 'true' }}
         uses: eregon/publish-release@v1
