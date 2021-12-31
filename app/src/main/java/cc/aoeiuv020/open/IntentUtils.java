@@ -12,29 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IntentUtils {
-    private static final String TAG = "IntentUtils";
-    private static Uri parseFilePath(Uri data) {
-        if (!"content".equalsIgnoreCase(data.getScheme()) || !"com.tencent.mobileqq.fileprovider".equals(data.getHost())) {
-            return data;
-        }
-        try {
-            return Uri.fromFile(new File(URLDecoder.decode(data.getPath().substring("/external_files".length()), "utf-8")));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public static Intent parseFilePath(Intent intent) {
-        Log.d(TAG, "parseFilePath() called with: intent = [" + intentToString(intent) + "]");
-        Uri data = intent.getData();
-        if (data == null) {
-            return intent;
-        }
-        intent.setData(parseFilePath(data));
-        return intent;
-    }
-
     public static String intentToString(Intent intent) {
         StringBuilder sb = new StringBuilder();
         sb.append("intent = ");
